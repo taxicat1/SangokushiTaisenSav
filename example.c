@@ -24,27 +24,27 @@ int main(int argc, char* argv[]) {
 	
 	// Dump to bins
 	FILE* out1 = fopen("block1.bin", "wb");
-	fwrite(sav_data.block1Data, 1, BLOCK_1_SIZE, out1);
+	fwrite(sav_data.block1.data, 1, BLOCK_1_SIZE, out1);
 	fclose(out1);
 	
 	FILE* out2 = fopen("block2.bin", "wb");
-	fwrite(sav_data.block2Data, 1, BLOCK_2_SIZE, out2);
+	fwrite(sav_data.block2.data, 1, BLOCK_2_SIZE, out2);
 	fclose(out2);
 	
 	FILE* out3 = fopen("block3.bin", "wb");
-	fwrite(sav_data.block3Data, 1, BLOCK_3_SIZE, out3);
+	fwrite(sav_data.block3.data, 1, BLOCK_3_SIZE, out3);
 	fclose(out3);
 	
 	FILE* out4 = fopen("block4.bin", "wb");
-	fwrite(sav_data.block4Data, 1, BLOCK_4_SIZE, out4);
+	fwrite(sav_data.block4.data, 1, BLOCK_4_SIZE, out4);
 	fclose(out4);
 	
 	FILE* out5 = fopen("block5.bin", "wb");
-	fwrite(sav_data.block5Data, 1, BLOCK_5_SIZE, out5);
+	fwrite(sav_data.block5.data, 1, BLOCK_5_SIZE, out5);
 	fclose(out5);
 	
 	FILE* out6 = fopen("block6.bin", "wb");
-	fwrite(sav_data.block6Data, 1, BLOCK_6_SIZE, out6);
+	fwrite(sav_data.block6.data, 1, BLOCK_6_SIZE, out6);
 	fclose(out6);
 	
 	// Copy to a new save file (re-encrypting)

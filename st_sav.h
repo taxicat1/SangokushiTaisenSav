@@ -92,53 +92,52 @@ void ST_PadSav(FILE* out_sav);
 
 
 typedef struct {
-	void*      block1Data;
-	STErrCode  block1ErrCode;
-	void*      block2Data;
-	STErrCode  block2ErrCode;
-	void*      block3Data;
-	STErrCode  block3ErrCode;
-	void*      block4Data;
-	STErrCode  block4ErrCode;
-	void*      block5Data;
-	STErrCode  block5ErrCode;
-	void*      block6Data;
-	STErrCode  block6ErrCode;
+	void*      data;
+	STErrCode  errCode;
+} ST_SavBlockResult;
+
+typedef struct {
+	ST_SavBlockResult  block1;
+	ST_SavBlockResult  block2;
+	ST_SavBlockResult  block3;
+	ST_SavBlockResult  block4;
+	ST_SavBlockResult  block5;
+	ST_SavBlockResult  block6;
 } ST_Sav;
 
 static inline bool ST_SavDataImport(ST_Sav* out_data, FILE* in_sav) {
-	out_data->block1ErrCode = ST_GetSavBlock1Data(&out_data->block1Data, in_sav);
-	out_data->block2ErrCode = ST_GetSavBlock2Data(&out_data->block2Data, in_sav);
-	out_data->block3ErrCode = ST_GetSavBlock3Data(&out_data->block3Data, in_sav);
-	out_data->block4ErrCode = ST_GetSavBlock4Data(&out_data->block4Data, in_sav);
-	out_data->block5ErrCode = ST_GetSavBlock5Data(&out_data->block5Data, in_sav);
-	out_data->block6ErrCode = ST_GetSavBlock6Data(&out_data->block6Data, in_sav);
+	out_data->block1.errCode = ST_GetSavBlock1Data(&out_data->block1.data, in_sav);
+	out_data->block2.errCode = ST_GetSavBlock2Data(&out_data->block2.data, in_sav);
+	out_data->block3.errCode = ST_GetSavBlock3Data(&out_data->block3.data, in_sav);
+	out_data->block4.errCode = ST_GetSavBlock4Data(&out_data->block4.data, in_sav);
+	out_data->block5.errCode = ST_GetSavBlock5Data(&out_data->block5.data, in_sav);
+	out_data->block6.errCode = ST_GetSavBlock6Data(&out_data->block6.data, in_sav);
 	
-	return (out_data->block1ErrCode +
-	        out_data->block2ErrCode +
-	        out_data->block3ErrCode +
-	        out_data->block4ErrCode +
-	        out_data->block5ErrCode +
-	        out_data->block6ErrCode) == 0;
+	return (out_data->block1.errCode +
+	        out_data->block2.errCode +
+	        out_data->block3.errCode +
+	        out_data->block4.errCode +
+	        out_data->block5.errCode +
+	        out_data->block6.errCode) == 0;
 }
 
 static inline void ST_SavDataExport(const ST_Sav* in_data, FILE* out_sav) {
-	ST_PutSavBlock1Data(out_sav, in_data->block1Data);
-	ST_PutSavBlock2Data(out_sav, in_data->block2Data);
-	ST_PutSavBlock3Data(out_sav, in_data->block3Data);
-	ST_PutSavBlock4Data(out_sav, in_data->block4Data);
-	ST_PutSavBlock5Data(out_sav, in_data->block5Data);
-	ST_PutSavBlock6Data(out_sav, in_data->block6Data);
+	ST_PutSavBlock1Data(out_sav, in_data->block1.data);
+	ST_PutSavBlock2Data(out_sav, in_data->block2.data);
+	ST_PutSavBlock3Data(out_sav, in_data->block3.data);
+	ST_PutSavBlock4Data(out_sav, in_data->block4.data);
+	ST_PutSavBlock5Data(out_sav, in_data->block5.data);
+	ST_PutSavBlock6Data(out_sav, in_data->block6.data);
 	ST_PadSav(out_sav);
 }
 
 static inline void ST_SavDataFree(ST_Sav* in_data) {
-	free(in_data->block1Data);
-	free(in_data->block2Data);
-	free(in_data->block3Data);
-	free(in_data->block4Data);
-	free(in_data->block5Data);
-	free(in_data->block6Data);
+	free(in_data->block1.data);
+	free(in_data->block2.data);
+	free(in_data->block3.data);
+	free(in_data->block4.data);
+	free(in_data->block5.data);
+	free(in_data->block6.data);
 }
 
 
