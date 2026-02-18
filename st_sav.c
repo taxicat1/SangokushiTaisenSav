@@ -118,12 +118,12 @@ void ST_PadSav(FILE* out_sav) {
 #define PADDED_SIZE(size)  ((size + sizeof(BlockFooter) + 0x7F) & ~0x7F)
 static const BlockInfo* getBlockInfo(STBlockType target_block) {
 	static const BlockInfo blockRecordList[] = {
-		{ BLOCK_1,  0x0,    BLOCK_1_SIZE,  PADDED_SIZE(BLOCK_1_SIZE),  false },
-		{ BLOCK_2,  0x80,   BLOCK_2_SIZE,  PADDED_SIZE(BLOCK_2_SIZE),  true  },
-		{ BLOCK_4,  0x500,  BLOCK_3_SIZE,  PADDED_SIZE(BLOCK_3_SIZE),  true  },
-		{ BLOCK_5,  0x880,  BLOCK_4_SIZE,  PADDED_SIZE(BLOCK_4_SIZE),  true  },
-		{ BLOCK_3,  0x1180, BLOCK_5_SIZE,  PADDED_SIZE(BLOCK_5_SIZE),  true  },
-		{ BLOCK_6,  0x6B00, BLOCK_6_SIZE,  PADDED_SIZE(BLOCK_6_SIZE),  true  }
+		{ BLOCK_1,  0x0,     BLOCK_1_SIZE,  PADDED_SIZE(BLOCK_1_SIZE),  false },
+		{ BLOCK_2,  0x80,    BLOCK_2_SIZE,  PADDED_SIZE(BLOCK_2_SIZE),  true  },
+		{ BLOCK_3,  0x500,   BLOCK_3_SIZE,  PADDED_SIZE(BLOCK_3_SIZE),  true  },
+		{ BLOCK_4,  0x880,   BLOCK_4_SIZE,  PADDED_SIZE(BLOCK_4_SIZE),  true  },
+		{ BLOCK_5,  0x1180,  BLOCK_5_SIZE,  PADDED_SIZE(BLOCK_5_SIZE),  true  },
+		{ BLOCK_6,  0x6B00,  BLOCK_6_SIZE,  PADDED_SIZE(BLOCK_6_SIZE),  true  }
 	};
 	
 	const BlockInfo* info = &blockRecordList[0];
