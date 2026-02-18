@@ -5,13 +5,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+// TODO name blocks
 typedef enum {
-	BLOCK_1,  // TODO name blocks
-	BLOCK_2,
-	BLOCK_4,
-	BLOCK_5,
-	BLOCK_3,
-	BLOCK_6
+	BLOCK_1,  // Header
+	BLOCK_2,  // Profile
+	BLOCK_3,  // Decks
+	BLOCK_4,  // 
+	BLOCK_5,  // 
+	BLOCK_6   // ?
 } STBlockType;
 
 #define BLOCK_1_SIZE  (0x50)
@@ -86,7 +87,7 @@ static inline void ST_PutSavBlock6Data(FILE* out_sav, const void* in_data) {
 
 
 
-// Pad a newly create file to 64kB with FF bytes.
+// Pad a newly created file to 64kB with FF bytes.
 void ST_PadSav(FILE* out_sav);
 
 

@@ -115,7 +115,8 @@ void ST_PadSav(FILE* out_sav) {
 }
 
 
-#define PADDED_SIZE(size)  ((size + sizeof(BlockFooter) + 0x7F) & ~0x7F)
+#define ALIGN_128(x)  (((x) + 0x7F) & ~0x7F)
+#define PADDED_SIZE(size)  ALIGN_128(size + sizeof(BlockFooter))
 static const BlockInfo* getBlockInfo(STBlockType target_block) {
 	static const BlockInfo blockRecordList[] = {
 		{ BLOCK_1,  0x0,     BLOCK_1_SIZE,  PADDED_SIZE(BLOCK_1_SIZE),  false },
