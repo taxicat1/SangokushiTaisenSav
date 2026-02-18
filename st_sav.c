@@ -27,7 +27,7 @@ static void decryptBlockData(void* out_data, const void* in_block, const BlockIn
 static void encryptBlockData(void* out_block, const void* in_data, const BlockInfo* info);
 
 
-STErrCode ST_GetSavBlock(void** out_ptr, STBlockType block_type, FILE* in_sav) {
+STErrCode ST_GetSavBlockData(void** out_ptr, STBlockType block_type, FILE* in_sav) {
 	int ret_code = ST_ERR_NONE;
 	
 	const BlockInfo* info = getBlockInfo(block_type);
@@ -76,7 +76,7 @@ EXIT:
 }
 
 
-void ST_PutSavBlock(FILE* out_sav, STBlockType block_type, const void* in_data) {
+void ST_PutSavBlockData(FILE* out_sav, STBlockType block_type, const void* in_data) {
 	const BlockInfo* info = getBlockInfo(block_type);
 	
 	void* block = calloc(info->paddedLength, 1);

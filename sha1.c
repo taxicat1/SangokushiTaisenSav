@@ -160,6 +160,7 @@ static void processBlock(SHA1_Ctx* ctx, const void* external_src) {
 	ctx->h[4] += e;
 }
 
+
 static void finalize(SHA1_Ctx* ctx) {
 	ctx->buffer[ctx->bufferLength] = 0x80;
 	ctx->bufferLength++;

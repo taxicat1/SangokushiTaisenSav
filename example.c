@@ -10,70 +10,48 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	
-	FILE* in = fopen(argv[1], "rb");
-	FILE* out = fopen(argv[2], "wb");
-	if (in == NULL || out == NULL) {
+	FILE* in_file = fopen(argv[1], "rb");
+	FILE* out_file = fopen(argv[2], "wb");
+	if (in_file == NULL || out_file == NULL) {
 		return 1;
 	}
 	
-	void* block1;
-	void* block2;
-	void* block3;
-	void* block4;
-	void* block5;
-	void* block6;
-	
-	ST_GetSavBlock(&block1, BLOCK_1, in);
-	ST_GetSavBlock(&block2, BLOCK_2, in);
-	ST_GetSavBlock(&block3, BLOCK_3, in);
-	ST_GetSavBlock(&block4, BLOCK_4, in);
-	ST_GetSavBlock(&block5, BLOCK_5, in);
-	ST_GetSavBlock(&block6, BLOCK_6, in);
-	fclose(in);
+	ST_Sav sav_data;
+	ST_SavDataImport(&sav_data, in_file);
+	fclose(in_file);
 	
 	// Do something with block data
 	
 	// Dump to bins
 	FILE* out1 = fopen("block1.bin", "wb");
-	fwrite(block1, 1, BLOCK_1_SIZE, out1);
+	fwrite(sav_data.block1Data, 1, BLOCK_1_SIZE, out1);
 	fclose(out1);
 	
 	FILE* out2 = fopen("block2.bin", "wb");
-	fwrite(block1, 1, BLOCK_2_SIZE, out2);
+	fwrite(sav_data.block2Data, 1, BLOCK_2_SIZE, out2);
 	fclose(out2);
 	
 	FILE* out3 = fopen("block3.bin", "wb");
-	fwrite(block1, 1, BLOCK_3_SIZE, out3);
+	fwrite(sav_data.block3Data, 1, BLOCK_3_SIZE, out3);
 	fclose(out3);
 	
 	FILE* out4 = fopen("block4.bin", "wb");
-	fwrite(block1, 1, BLOCK_4_SIZE, out4);
+	fwrite(sav_data.block4Data, 1, BLOCK_4_SIZE, out4);
 	fclose(out4);
 	
 	FILE* out5 = fopen("block5.bin", "wb");
-	fwrite(block1, 1, BLOCK_5_SIZE, out5);
+	fwrite(sav_data.block5Data, 1, BLOCK_5_SIZE, out5);
 	fclose(out5);
 	
 	FILE* out6 = fopen("block6.bin", "wb");
-	fwrite(block1, 1, BLOCK_6_SIZE, out6);
+	fwrite(sav_data.block6Data, 1, BLOCK_6_SIZE, out6);
 	fclose(out6);
 	
 	// Copy to a new save file (re-encrypting)
-	ST_PutSavBlock(out, BLOCK_1, block1);
-	ST_PutSavBlock(out, BLOCK_2, block2);
-	ST_PutSavBlock(out, BLOCK_3, block3);
-	ST_PutSavBlock(out, BLOCK_4, block4);
-	ST_PutSavBlock(out, BLOCK_5, block5);
-	ST_PutSavBlock(out, BLOCK_6, block6);
-	ST_PadSav(out);
-	fclose(out);
+	ST_SavDataExport(&sav_data, out_file);
+	fclose(out_file);
 	
-	free(block1);
-	free(block2);
-	free(block3);
-	free(block4);
-	free(block5);
-	free(block6);
+	ST_SavDataFree(&sav_data);
 	
 	return 0;
 }

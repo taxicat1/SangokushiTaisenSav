@@ -169,6 +169,7 @@ static void processBlock(MD5_Ctx* ctx, const void* external_src) {
 	ctx->h[3] += d;
 }
 
+
 static void finalize(MD5_Ctx* ctx) {
 	ctx->buffer[ctx->bufferLength] = 0x80;
 	ctx->bufferLength++;
