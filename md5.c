@@ -91,14 +91,14 @@ static inline uint32_t readU32LE(uint8_t* src) {
 #define FUNC_SUM(b, c, d)  (b ^ c ^ d)
 #define FUNC_4(b, c, d)  (c ^ (b | ~d))
 static void processBlock(MD5_Ctx* ctx, const void* external_src) {
-	static char roundRotations[64] = {
+	static const int roundRotations[64] = {
 		7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
 		5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,
 		4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,
 		6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,
 	};
 	
-	static uint32_t K[64] = {
+	static const uint32_t K[64] = {
 		0xD76AA478, 0xE8C7B756, 0x242070DB, 0xC1BDCEEE,
 		0xF57C0FAF, 0x4787C62A, 0xA8304613, 0xFD469501,
 		0x698098D8, 0x8B44F7AF, 0xFFFF5BB1, 0x895CD7BE,
