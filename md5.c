@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-static void processBlock(MD5_Ctx* ctx, const void* externalSrc);
+static void processBlock(MD5_Ctx* ctx, const void* external_src);
 static void finalize(MD5_Ctx* ctx);
 
 
@@ -76,7 +76,7 @@ void MD5_Digest(MD5_Ctx* ctx, void* dst) {
 }
 
 
-static inline uint32_t readU32BE(uint8_t* src) {
+static inline uint32_t readU32LE(uint8_t* src) {
 	uint32_t ret = *src++;
 	ret |= *src++ << 8;
 	ret |= *src++ << 16;
@@ -90,7 +90,7 @@ static inline uint32_t readU32BE(uint8_t* src) {
 #define FUNC_CH2(b, c, d)  ((d & b) | (~d & c))
 #define FUNC_SUM(b, c, d)  (b ^ c ^ d)
 #define FUNC_4(b, c, d)  (c ^ (b | ~d))
-static void processBlock(MD5_Ctx* ctx, const void* externalSrc) {
+static void processBlock(MD5_Ctx* ctx, const void* external_src) {
 	static char roundRotations[64] = {
 		7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
 		5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,
@@ -118,15 +118,15 @@ static void processBlock(MD5_Ctx* ctx, const void* externalSrc) {
 	};
 	
 	uint8_t* buffer;
-	if (externalSrc != NULL) {
-		buffer = (uint8_t*)externalSrc;
+	if (external_src != NULL) {
+		buffer = (uint8_t*)external_src;
 	} else {
 		buffer = &ctx->buffer[0];
 	}
 	
 	uint32_t X[16];
 	for (int i = 0; i < 16; i++) {
-		X[i] = readU32BE(buffer + (i * 4));
+		X[i] = readU32LE(buffer + (i * 4));
 	}
 	
 	uint32_t a = ctx->h[0];

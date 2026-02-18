@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-static void processBlock(SHA1_Ctx* ctx, const void* externalSrc);
+static void processBlock(SHA1_Ctx* ctx, const void* external_src);
 static void finalize(SHA1_Ctx* ctx);
 
 
@@ -95,10 +95,10 @@ static inline uint32_t readU32BE(uint8_t* src) {
 #define K_2  (0x6ED9EBA1)
 #define K_3  (0x8F1BBCDC)
 #define K_4  (0xCA62C1D6)
-static void processBlock(SHA1_Ctx* ctx, const void* externalSrc) {
+static void processBlock(SHA1_Ctx* ctx, const void* external_src) {
 	uint8_t* buffer;
-	if (externalSrc != NULL) {
-		buffer = (uint8_t*)externalSrc;
+	if (external_src != NULL) {
+		buffer = (uint8_t*)external_src;
 	} else {
 		buffer = &ctx->buffer[0];
 	}
