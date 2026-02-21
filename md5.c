@@ -91,13 +91,6 @@ static inline uint32_t readU32LE(uint8_t* src) {
 #define FUNC_SUM(b, c, d)  (b ^ c ^ d)
 #define FUNC_4(b, c, d)  (c ^ (b | ~d))
 static void processBlock(MD5_Ctx* ctx, const void* external_src) {
-	static const int roundRotations[64] = {
-		7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
-		5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,
-		4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,
-		6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,
-	};
-	
 	static const uint32_t K[64] = {
 		0xD76AA478, 0xE8C7B756, 0x242070DB, 0xC1BDCEEE,
 		0xF57C0FAF, 0x4787C62A, 0xA8304613, 0xFD469501,
@@ -134,33 +127,35 @@ static void processBlock(MD5_Ctx* ctx, const void* external_src) {
 	uint32_t c = ctx->h[2];
 	uint32_t d = ctx->h[3];
 	
-	int r = 0;
-	while (r < 16) {
-		a += FUNC_CH(b, c, d) + X[r] + K[r];  a = ROTL(a, roundRotations[r]);  a += b;  r++;
-		d += FUNC_CH(a, b, c) + X[r] + K[r];  d = ROTL(d, roundRotations[r]);  d += a;  r++;
-		c += FUNC_CH(d, a, b) + X[r] + K[r];  c = ROTL(c, roundRotations[r]);  c += d;  r++;
-		b += FUNC_CH(c, d, a) + X[r] + K[r];  b = ROTL(b, roundRotations[r]);  b += c;  r++;
-	}
+	const uint32_t* Kp = &K[0];
 	
-	while (r < 32) {
-		a += FUNC_CH2(b, c, d) + X[((5 * r) + 1) & 15] + K[r];  a = ROTL(a, roundRotations[r]);  a += b;  r++;
-		d += FUNC_CH2(a, b, c) + X[((5 * r) + 1) & 15] + K[r];  d = ROTL(d, roundRotations[r]);  d += a;  r++;
-		c += FUNC_CH2(d, a, b) + X[((5 * r) + 1) & 15] + K[r];  c = ROTL(c, roundRotations[r]);  c += d;  r++;
-		b += FUNC_CH2(c, d, a) + X[((5 * r) + 1) & 15] + K[r];  b = ROTL(b, roundRotations[r]);  b += c;  r++;
+	int j = 0;
+	for (int i = 0; i < 4; i++) {
+		a += FUNC_CH(b, c, d) + X[j] + *Kp++;  a = ROTL(a,  7);  a += b;  j++;
+		d += FUNC_CH(a, b, c) + X[j] + *Kp++;  d = ROTL(d, 12);  d += a;  j++;
+		c += FUNC_CH(d, a, b) + X[j] + *Kp++;  c = ROTL(c, 17);  c += d;  j++;
+		b += FUNC_CH(c, d, a) + X[j] + *Kp++;  b = ROTL(b, 22);  b += c;  j++;
 	}
-	
-	while (r < 48) {
-		a += FUNC_SUM(b, c, d) + X[((3 * r) + 5) & 15] + K[r];  a = ROTL(a, roundRotations[r]);  a += b;  r++;
-		d += FUNC_SUM(a, b, c) + X[((3 * r) + 5) & 15] + K[r];  d = ROTL(d, roundRotations[r]);  d += a;  r++;
-		c += FUNC_SUM(d, a, b) + X[((3 * r) + 5) & 15] + K[r];  c = ROTL(c, roundRotations[r]);  c += d;  r++;
-		b += FUNC_SUM(c, d, a) + X[((3 * r) + 5) & 15] + K[r];  b = ROTL(b, roundRotations[r]);  b += c;  r++;
+	j = 1;
+	for (int i = 0; i < 4; i++) {
+		a += FUNC_CH2(b, c, d) + X[j & 15] + *Kp++;  a = ROTL(a,  5);  a += b;  j += 5;
+		d += FUNC_CH2(a, b, c) + X[j & 15] + *Kp++;  d = ROTL(d,  9);  d += a;  j += 5;
+		c += FUNC_CH2(d, a, b) + X[j & 15] + *Kp++;  c = ROTL(c, 14);  c += d;  j += 5;
+		b += FUNC_CH2(c, d, a) + X[j & 15] + *Kp++;  b = ROTL(b, 20);  b += c;  j += 5;
 	}
-	
-	while (r < 64) {
-		a += FUNC_4(b, c, d) + X[(7 * r) & 15] + K[r];  a = ROTL(a, roundRotations[r]);  a += b;  r++;
-		d += FUNC_4(a, b, c) + X[(7 * r) & 15] + K[r];  d = ROTL(d, roundRotations[r]);  d += a;  r++;
-		c += FUNC_4(d, a, b) + X[(7 * r) & 15] + K[r];  c = ROTL(c, roundRotations[r]);  c += d;  r++;
-		b += FUNC_4(c, d, a) + X[(7 * r) & 15] + K[r];  b = ROTL(b, roundRotations[r]);  b += c;  r++;
+	j = 5;
+	for (int i = 0; i < 4; i++) {
+		a += FUNC_SUM(b, c, d) + X[j & 15] + *Kp++;  a = ROTL(a,  4);  a += b;  j += 3;
+		d += FUNC_SUM(a, b, c) + X[j & 15] + *Kp++;  d = ROTL(d, 11);  d += a;  j += 3;
+		c += FUNC_SUM(d, a, b) + X[j & 15] + *Kp++;  c = ROTL(c, 16);  c += d;  j += 3;
+		b += FUNC_SUM(c, d, a) + X[j & 15] + *Kp++;  b = ROTL(b, 23);  b += c;  j += 3;
+	}
+	j = 0;
+	for (int i = 0; i < 4; i++) {
+		a += FUNC_4(b, c, d) + X[j & 15] + *Kp++;  a = ROTL(a,  6);  a += b;  j += 7;
+		d += FUNC_4(a, b, c) + X[j & 15] + *Kp++;  d = ROTL(d, 10);  d += a;  j += 7;
+		c += FUNC_4(d, a, b) + X[j & 15] + *Kp++;  c = ROTL(c, 15);  c += d;  j += 7;
+		b += FUNC_4(c, d, a) + X[j & 15] + *Kp++;  b = ROTL(b, 21);  b += c;  j += 7;
 	}
 	
 	ctx->h[0] += a;
